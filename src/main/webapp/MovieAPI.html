@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Movie API</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    </head>
+    <body>
+        <div class="container">
+
+            <h1>Movie API</h1>
+
+            <table class="table" id="allmovies"></table>
+            <label for="user">User ID: </label>
+            <input type="text" id="number" name="number of the movie">
+            <input class="btn btn-primary" id="one" value="Fetch movie ID">
+            <input class="btn btn-primary" id="all" value="Fetch all movies">
+            <p id="message"></p>
+            <table class="table" id="onemovie"></table>
+
+        </div>
+
+        <script>
+
+            let url = "https://alexanderpihl.com/Movie-Week3/api/movie/";
+            var all = document.getElementById("all");
+            var one = document.getElementById("one");
+
+            all.onclick = function () {
+                var newurl = url + "all";
+                fetch(newurl)
+                        .then(res => res.json())
+                        .then(data => {
+
+                            var allMovies = "<thead><tr><th>id</th><th>Title</th><th>Year</th><th>Actors</th></thead><tbody>";
+                            for (var i = 0; i < data.length; i++) {
+                                allMovies += "<tr><td>" + data[i].id + "</td><td>" + data[i].title + "</td><td>" + data[i].year + "</td><td>" + data[i].actors + "</td></tr>";
+                            }
+                            allMovies += "</tbody>";
+
+                            document.getElementById("allmovies").innerHTML = allMovies;
+
+                        });
+            };
+
+            one.onclick = function () {
+                var number = document.getElementById("number").value;
+
+                let newurl = url + number;
+
+                fetch(newurl)
+                        .then(res => res.json())
+                        .then(data => {
+                            var onemovie = "<tr><th>Id:</th><td>" + data.id + "</td></tr><tr><th>Titel:</th><td>" +
+                                    data.title + "</td></tr><tr><th>År:</th><td>" + data.year + "</td></tr><tr><th>Medvirkende:</th><td>" +
+                                    data.actors + "</td></tr>";
+
+                            document.getElementById("onemovie").innerHTML = onemovie;
+                        });
+                document.getElementById("message").innerHTML = "";
+            }
+            };
+
+        </script>
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    </body>
+</html>
